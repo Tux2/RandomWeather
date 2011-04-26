@@ -10,13 +10,16 @@ import org.bukkit.util.config.Configuration;
 
 public class NoWeather extends JavaPlugin
 {
+	public final Logger log = Logger.getLogger( "Minecraft" );
+	public Boolean disWeather;
+	public Boolean disThunder;
+	
 	public void onEnable( )
 	{
-		final Logger log = Logger.getLogger( "Minecraft" );
 		final Configuration config = getConfiguration();
 		
-		Boolean disWeather   = config.getBoolean( "disable-weather", true );
-		Boolean disThunder   = config.getBoolean( "disable-thunder", true );
+		disWeather   = config.getBoolean( "disable-weather", true );
+		disThunder   = config.getBoolean( "disable-thunder", true );
 		Boolean disLightning = config.getBoolean( "disable-lightning", true );
 		
 		config.setProperty( "disable-weather", disWeather );
@@ -33,6 +36,13 @@ public class NoWeather extends JavaPlugin
 		final NoWeatherWeatherListener wL = new NoWeatherWeatherListener();
 		
 		PluginManager pm = getServer().getPluginManager();
+		
+		if( disWeather || disThunder )
+		{
+			final NoWeatherWorldListener worldL = new NoWeatherWorldListener( this );
+			
+			pm.registerEvent( Event.Type.WORLD_LOAD, worldL, Event.Priority.Highest, this );
+		}
 		
 		if( disWeather )
 			pm.registerEvent( Event.Type.WEATHER_CHANGE, wL, Event.Priority.Highest, this );
