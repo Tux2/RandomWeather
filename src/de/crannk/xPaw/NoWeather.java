@@ -23,7 +23,7 @@ public class NoWeather extends JavaPlugin
 		final PluginManager pm = getServer().getPluginManager();
 		final PluginDescriptionFile pdfFile = this.getDescription();
 		
-		pm.registerEvent( Event.Type.WORLD_LOAD, worldL, Event.Priority.Highest, this );
+		pm.registerEvent( Event.Type.WORLD_LOAD, worldL, Event.Priority.Monitor, this );
 		pm.registerEvent( Event.Type.WEATHER_CHANGE, wL, Event.Priority.Highest, this );
 		pm.registerEvent( Event.Type.THUNDER_CHANGE, wL, Event.Priority.Highest, this );
 		pm.registerEvent( Event.Type.LIGHTNING_STRIKE, wL, Event.Priority.Highest, this );
