@@ -8,7 +8,7 @@ import org.bukkit.event.world.WorldLoadEvent;
 
 public class NoWeatherWorldListener extends WorldListener
 {
-	protected NoWeather plugin;
+	private NoWeather plugin;
 	
 	public NoWeatherWorldListener( NoWeather plugin )
 	{
@@ -29,16 +29,26 @@ public class NoWeatherWorldListener extends WorldListener
 	
 	private void WorldLoaded( World world )
 	{
-		if( plugin.disWeather && world.hasStorm() )
+		String worldName     = world.getName();
+		Boolean disWeather   = plugin.isNodeDisabled( "disable-weather", worldName );
+		Boolean disThunder   = plugin.isNodeDisabled( "disable-thunder", worldName );
+		Boolean disLightning = plugin.isNodeDisabled( "disable-lightning", worldName );
+		
+		if( disWeather && world.hasStorm() )
 		{
 			world.setStorm( false );
 			plugin.log.info( "[NoWeather] Stopped rain in " + world.getName() );
 		}
 		
-		if( plugin.disThunder && world.isThundering() )
+		if( disThunder && world.isThundering() )
 		{
 			world.setThundering( false );
 			plugin.log.info( "[NoWeather] Stopped thunder in " + world.getName() );
 		}
+		
+		plugin.setConfigNode( "disable-weather", worldName, disWeather );
+		plugin.setConfigNode( "disable-thunder", worldName, disThunder );
+		plugin.setConfigNode( "disable-lightning", worldName, disLightning );
+		plugin.config.save();
 	}
 }

@@ -10,55 +10,39 @@ import org.bukkit.util.config.Configuration;
 
 public class NoWeather extends JavaPlugin
 {
+	public Configuration config;
 	public final Logger log = Logger.getLogger( "Minecraft" );
-	public Boolean disWeather;
-	public Boolean disThunder;
 	
 	public void onEnable( )
 	{
-		final Configuration config = getConfiguration();
+		config = getConfiguration();
+		config.load();
 		
-		disWeather   = config.getBoolean( "disable-weather", true );
-		disThunder   = config.getBoolean( "disable-thunder", true );
-		Boolean disLightning = config.getBoolean( "disable-lightning", true );
+		final NoWeatherWeatherListener wL = new NoWeatherWeatherListener( this );
+		final NoWeatherWorldListener worldL = new NoWeatherWorldListener( this );
+		final PluginManager pm = getServer().getPluginManager();
+		final PluginDescriptionFile pdfFile = this.getDescription();
 		
-		config.setProperty( "disable-weather", disWeather );
-		config.setProperty( "disable-thunder", disThunder );
-		config.setProperty( "disable-lightning", disLightning );
-		config.save();
+		pm.registerEvent( Event.Type.WORLD_LOAD, worldL, Event.Priority.Highest, this );
+		pm.registerEvent( Event.Type.WEATHER_CHANGE, wL, Event.Priority.Highest, this );
+		pm.registerEvent( Event.Type.THUNDER_CHANGE, wL, Event.Priority.Highest, this );
+		pm.registerEvent( Event.Type.LIGHTNING_STRIKE, wL, Event.Priority.Highest, this );
 		
-		if( !disWeather && !disThunder && !disLightning )
-		{
-			log.warning( "Why you use NoWeather plugin? You didn't disable anything in it!" );
-			return;
-		}
-		
-		final NoWeatherWeatherListener wL = new NoWeatherWeatherListener();
-		
-		PluginManager pm = getServer().getPluginManager();
-		
-		if( disWeather || disThunder )
-		{
-			final NoWeatherWorldListener worldL = new NoWeatherWorldListener( this );
-			
-			pm.registerEvent( Event.Type.WORLD_LOAD, worldL, Event.Priority.Highest, this );
-		}
-		
-		if( disWeather )
-			pm.registerEvent( Event.Type.WEATHER_CHANGE, wL, Event.Priority.Highest, this );
-		
-		if( disThunder )
-			pm.registerEvent( Event.Type.THUNDER_CHANGE, wL, Event.Priority.Highest, this );
-		
-		if( disLightning )
-			pm.registerEvent( Event.Type.LIGHTNING_STRIKE, wL, Event.Priority.Highest, this );
-		
-		PluginDescriptionFile pdfFile = this.getDescription();
 		log.info( pdfFile.getName() + " version " + pdfFile.getVersion() + " is enabled!" );
 	}
 	
 	public void onDisable( )
 	{
 		//
+	}
+	
+	public boolean isNodeDisabled( String name, String worldName )
+	{
+		return config.getBoolean( worldName + "." + name, true );
+	}
+	
+	public void setConfigNode( String name, String worldName, Boolean value )
+	{
+		config.setProperty( worldName + "." + name, value );
 	}
 }

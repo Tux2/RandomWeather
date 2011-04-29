@@ -7,14 +7,16 @@ import org.bukkit.event.weather.WeatherListener;
 
 public class NoWeatherWeatherListener extends WeatherListener
 {
-	public NoWeatherWeatherListener( )
+	private NoWeather plugin;
+	
+	public NoWeatherWeatherListener( NoWeather plugin )
 	{
-		//
+		this.plugin = plugin;
 	}
 	
 	public void onWeatherChange( WeatherChangeEvent event )
 	{
-		if( event.toWeatherState() )
+		if( event.toWeatherState() && plugin.isNodeDisabled( "disable-weather", event.getWorld().getName() ) )
 		{
 			event.setCancelled( true );
 		}
@@ -22,7 +24,7 @@ public class NoWeatherWeatherListener extends WeatherListener
 	
 	public void onThunderChange( ThunderChangeEvent event )
 	{
-		if( event.toThunderState() )
+		if( event.toThunderState() && plugin.isNodeDisabled( "disable-thunder", event.getWorld().getName() ) )
 		{
 			event.setCancelled( true );
 		}
@@ -30,6 +32,9 @@ public class NoWeatherWeatherListener extends WeatherListener
 	
 	public void onLightningStrike( LightningStrikeEvent event )
 	{
-		event.setCancelled( true );
+		if( plugin.isNodeDisabled( "disable-lightning", event.getWorld().getName() ) )
+		{
+			event.setCancelled( true );
+		}
 	}
 }
