@@ -43,9 +43,9 @@ public class NoWeatherWorldListener extends WorldListener
 			plugin.log.info( "[NoWeather] Stopped thunder in " + worldName );
 		}
 		
-		plugin.log.info( "[NoWeather] " + worldName + " - Weather: " + disWeather.toString() );
-		plugin.log.info( "[NoWeather] " + worldName + " - Thunder: " + disThunder.toString() );
-		plugin.log.info( "[NoWeather] " + worldName + " - Lightni: " + disLightning.toString() );
+	//	plugin.log.info( "[NoWeather] " + worldName + " - Weather  : " + disWeather.toString() );
+	//	plugin.log.info( "[NoWeather] " + worldName + " - Thunder  : " + disThunder.toString() );
+	//	plugin.log.info( "[NoWeather] " + worldName + " - Lightning: " + disLightning.toString() );
 		
 		plugin.setConfigNode( "disable-weather", worldName, disWeather );
 		plugin.setConfigNode( "disable-thunder", worldName, disThunder );
