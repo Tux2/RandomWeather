@@ -1,7 +1,5 @@
 package de.crannk.xPaw;
 
-import java.util.List;
-
 import org.bukkit.World;
 import org.bukkit.event.world.WorldListener;
 import org.bukkit.event.world.WorldLoadEvent;
@@ -13,13 +11,6 @@ public class NoWeatherWorldListener extends WorldListener
 	public NoWeatherWorldListener( NoWeather plugin )
 	{
 		this.plugin = plugin;
-		
-		List<World> worlds = plugin.getServer().getWorlds();
-		
-		for( World world : worlds )
-		{
-			WorldLoaded( world );
-		}
 	}
 	
 	public void onWorldLoad( WorldLoadEvent event )
@@ -27,9 +18,15 @@ public class NoWeatherWorldListener extends WorldListener
 		WorldLoaded( event.getWorld() );
 	}
 	
-	private void WorldLoaded( World world )
+	public void WorldLoaded( World world )
 	{
-		String worldName     = world.getName();
+		String worldName = world.getName();
+		
+		if( !plugin.config.getKeys( null ).contains( worldName ) )
+		{
+			plugin.log.info( "[NoWeather] " + worldName + " - no configuration, generating defaults." );
+		}
+		
 		Boolean disWeather   = plugin.isNodeDisabled( "disable-weather", worldName );
 		Boolean disThunder   = plugin.isNodeDisabled( "disable-thunder", worldName );
 		Boolean disLightning = plugin.isNodeDisabled( "disable-lightning", worldName );
@@ -37,14 +34,18 @@ public class NoWeatherWorldListener extends WorldListener
 		if( disWeather && world.hasStorm() )
 		{
 			world.setStorm( false );
-			plugin.log.info( "[NoWeather] Stopped rain in " + world.getName() );
+			plugin.log.info( "[NoWeather] Stopped storm in " + worldName );
 		}
 		
 		if( disThunder && world.isThundering() )
 		{
 			world.setThundering( false );
-			plugin.log.info( "[NoWeather] Stopped thunder in " + world.getName() );
+			plugin.log.info( "[NoWeather] Stopped thunder in " + worldName );
 		}
+		
+		plugin.log.info( "[NoWeather] " + worldName + " - Weather: " + disWeather.toString() );
+		plugin.log.info( "[NoWeather] " + worldName + " - Thunder: " + disThunder.toString() );
+		plugin.log.info( "[NoWeather] " + worldName + " - Lightni: " + disLightning.toString() );
 		
 		plugin.setConfigNode( "disable-weather", worldName, disWeather );
 		plugin.setConfigNode( "disable-thunder", worldName, disThunder );
