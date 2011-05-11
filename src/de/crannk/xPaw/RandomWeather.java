@@ -12,7 +12,7 @@ import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.util.config.Configuration;
 
-public class NoWeather extends JavaPlugin
+public class RandomWeather extends JavaPlugin
 {
 	public Configuration config;
 	public final Logger log = Logger.getLogger( "Minecraft" );
@@ -33,15 +33,15 @@ public class NoWeather extends JavaPlugin
 			}
 			catch( IOException e )
 			{
-				log.warning( "[NoWeather] Exception: " + e.getMessage() );
-				log.warning( "[NoWeather] Cannot create configuration file. And none to load, using defaults." );
+				log.warning( "[RandomWeather] Exception: " + e.getMessage() );
+				log.warning( "[RandomWeather] Cannot create configuration file. And none to load, using defaults." );
 			}
 		}
 		
 		config = getConfiguration();
 		
-		final NoWeatherWeatherListener wL = new NoWeatherWeatherListener( this );
-		final NoWeatherWorldListener worldL = new NoWeatherWorldListener( this );
+		final RandomWeatherWeatherListener wL = new RandomWeatherWeatherListener( this );
+		final RandomWeatherWorldListener worldL = new RandomWeatherWorldListener( this );
 		final PluginManager pm = getServer().getPluginManager();
 		final PluginDescriptionFile pdfFile = this.getDescription();
 		
@@ -70,7 +70,17 @@ public class NoWeather extends JavaPlugin
 		return config.getBoolean( worldName + "." + name, true );
 	}
 	
+	public int getIntValue( String name, String worldName, int thedefault )
+	{
+		return config.getInt(worldName + "." + name, thedefault);
+	}
+	
 	public void setConfigNode( String name, String worldName, Boolean value )
+	{
+		config.setProperty( worldName + "." + name, value );
+	}
+	
+	public void setConfigNode( String name, String worldName, int value )
 	{
 		config.setProperty( worldName + "." + name, value );
 	}

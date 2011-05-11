@@ -1,5 +1,5 @@
-name: NoWeather
+name: RandomWeather
 main: de.crannk.xPaw.NoWeather
 version: 1.3
-description: Disable weather
-author: xPaw
+description: Configurable semi-random weather
+author: xPaw & Tux2
