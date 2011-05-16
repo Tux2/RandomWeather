@@ -1,5 +1,14 @@
-name: RandomWeather
+name: WeatherRestrictions
 main: de.crannk.xPaw.RandomWeather
-version: 0.9-beta
+version: 0.9.1-beta
 description: Configurable semi-random weather
 author: xPaw & Tux2
+commands:
+   rain:
+      description: Makes it rain in the current world.
+      usage: |
+       /rain
+   rainclear:
+      description: Stops the rain in the current world.
+      usage: |
+       /rainclear

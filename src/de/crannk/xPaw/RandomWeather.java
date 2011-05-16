@@ -6,6 +6,9 @@ import java.util.List;
 import java.util.logging.Logger;
 
 import org.bukkit.World;
+import org.bukkit.command.Command;
+import org.bukkit.command.CommandSender;
+import org.bukkit.command.PluginCommand;
 import org.bukkit.event.Event;
 import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.PluginManager;
@@ -33,8 +36,8 @@ public class RandomWeather extends JavaPlugin
 			}
 			catch( IOException e )
 			{
-				log.warning( "[RandomWeather] Exception: " + e.getMessage() );
-				log.warning( "[RandomWeather] Cannot create configuration file. And none to load, using defaults." );
+				log.warning( "[WeatherRestrictions] Exception: " + e.getMessage() );
+				log.warning( "[WeatherRestrictions] Cannot create configuration file. And none to load, using defaults." );
 			}
 		}
 		
@@ -42,6 +45,7 @@ public class RandomWeather extends JavaPlugin
 		
 		final RandomWeatherWeatherListener wL = new RandomWeatherWeatherListener( this );
 		final RandomWeatherWorldListener worldL = new RandomWeatherWorldListener( this );
+		final RandomWeatherCommands commandL = new RandomWeatherCommands( this );
 		final PluginManager pm = getServer().getPluginManager();
 		final PluginDescriptionFile pdfFile = this.getDescription();
 		
@@ -56,6 +60,10 @@ public class RandomWeather extends JavaPlugin
 		pm.registerEvent( Event.Type.WEATHER_CHANGE, wL, Event.Priority.Highest, this );
 		pm.registerEvent( Event.Type.THUNDER_CHANGE, wL, Event.Priority.Highest, this );
 		pm.registerEvent( Event.Type.LIGHTNING_STRIKE, wL, Event.Priority.Highest, this );
+		PluginCommand command = this.getCommand("rain");
+		command.setExecutor(commandL);
+		PluginCommand command2 = this.getCommand("rainclear");
+		command2.setExecutor(commandL);
 		
 		log.info( pdfFile.getName() + " version " + pdfFile.getVersion() + " is enabled!" );
 	}
