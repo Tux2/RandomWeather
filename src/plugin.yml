@@ -1,14 +1,26 @@
 name: WeatherRestrictions
 main: de.crannk.xPaw.RandomWeather
-version: 0.9.1-beta
+version: 1.0
 description: Configurable semi-random weather
 author: xPaw & Tux2
 commands:
    rain:
-      description: Makes it rain in the current world.
+      description: Makes it rain in the current world (if enabled).
       usage: |
-       /rain
+       /rain <world>
    rainclear:
-      description: Stops the rain in the current world.
+      description: Stops all weather in the current world.
       usage: |
-       /rainclear
+       /rainclear <world>
+   clearrain:
+      description: Stops all weather in the current world.
+      usage: |
+       /clearrain <world>
+   thunder:
+      description: Starts a lightning storm (independent of weather, and if enabled).
+      usage: |
+       /thunder <world>
+   weatherstats:
+      description: Gives you information on the current storm status in all worlds.
+      usage: |
+       /weatherstats
