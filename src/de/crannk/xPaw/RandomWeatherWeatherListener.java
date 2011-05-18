@@ -19,7 +19,7 @@ public class RandomWeatherWeatherListener extends WeatherListener
 	
 	public void onWeatherChange( WeatherChangeEvent event )
 	{
-		if( event.toWeatherState() && plugin.isNodeDisabled( "disable-weather", event.getWorld().getName() ) )
+		if( !event.isCancelled() && event.toWeatherState() && plugin.isNodeDisabled( "disable-weather", event.getWorld().getName() ) )
 		{
 			event.setCancelled( true );
 		}else {
@@ -50,7 +50,7 @@ public class RandomWeatherWeatherListener extends WeatherListener
 	
 	public void onThunderChange( ThunderChangeEvent event )
 	{
-		if( event.toThunderState() && plugin.isNodeDisabled( "disable-thunder", event.getWorld().getName() ) )
+		if( !event.isCancelled() && event.toThunderState() && plugin.isNodeDisabled( "disable-thunder", event.getWorld().getName() ) )
 		{
 			event.setCancelled( true );
 		}
@@ -58,7 +58,7 @@ public class RandomWeatherWeatherListener extends WeatherListener
 	
 	public void onLightningStrike( LightningStrikeEvent event )
 	{
-		if( plugin.isNodeDisabled( "disable-lightning", event.getWorld().getName() ) )
+		if( !event.isCancelled() && plugin.isNodeDisabled( "disable-lightning", event.getWorld().getName() ) )
 		{
 			event.setCancelled( true );
 		}
