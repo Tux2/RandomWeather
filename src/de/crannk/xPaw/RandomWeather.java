@@ -89,6 +89,12 @@ public class RandomWeather extends JavaPlugin
 		//
 	}
 	
+	public boolean isNodeDisabled( String name, String worldName, boolean thedefault )
+	{
+		return config.getBoolean( worldName + "." + name, thedefault );
+	}
+	
+	/**Default is True if not set.**/
 	public boolean isNodeDisabled( String name, String worldName )
 	{
 		return config.getBoolean( worldName + "." + name, true );

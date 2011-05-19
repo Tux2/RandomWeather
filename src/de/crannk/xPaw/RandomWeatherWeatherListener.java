@@ -30,19 +30,22 @@ public class RandomWeatherWeatherListener extends WeatherListener
 				
 			}
 			if(plugin.isNodeDisabled("disable-weather", event.getWorld().getName())) {
-				//System.out.println("Stopped weather in world \"" + event.getWorld().getName() + "\"");
+				//Cancel Storm
 				event.setCancelled( true );
 			}else if(!plugin.isNodeDisabled("disable-weather", event.getWorld().getName()) && !event.getWorld().hasStorm()
 					&& ((plugin.getIntValue("minimum-rain-wait", event.getWorld().getName(), 600)*1000) >= System.currentTimeMillis() - lasttime)) {
-				//System.out.println("Minimum time not elapsed. Stopped weather in world \"" + event.getWorld().getName() + "\"");
-				//System.out.println("This world has a storm \"" + event.getWorld().hasStorm() + "\"");
+				//Cancel Storm
 				event.setCancelled( true );
 			}else if(!plugin.isNodeDisabled("disable-weather", event.getWorld().getName()) && !event.getWorld().hasStorm() 
 					&& ((plugin.getIntValue("minimum-rain-wait", event.getWorld().getName(), 600)*1000) < System.currentTimeMillis() - lasttime)) {
-				//System.out.println("Let it rain in world \"" + event.getWorld().getName() + "\"");
 				//let it rain.
+				//Check to see if we just want thunderstorms...
+				if(plugin.isNodeDisabled("makeall-thunderstorms", event.getWorld().getName(), false)) {
+					//If so, let's add some thunder in the mix
+					event.getWorld().setThundering(true);
+				}
 			}else if(event.getWorld().hasStorm()) {
-				//System.out.println("Weather stopped in world \"" + event.getWorld().getName() + "\" Recording...");
+				//Record when the rain stopped
 				plugin.lastweather.put(event.getWorld().getName(), System.currentTimeMillis());
 			}
 		}
