@@ -53,6 +53,7 @@ public class RandomWeather extends JavaPlugin
 		
 		final RandomWeatherWeatherListener wL = new RandomWeatherWeatherListener( this );
 		final RandomWeatherWorldListener worldL = new RandomWeatherWorldListener( this );
+		final RandomWeatherBlockListener blockL = new RandomWeatherBlockListener(this);
 		final RandomWeatherCommands commandL = new RandomWeatherCommands( this );
 		final PluginManager pm = getServer().getPluginManager();
 		final PluginDescriptionFile pdfFile = this.getDescription();
@@ -68,6 +69,7 @@ public class RandomWeather extends JavaPlugin
 		pm.registerEvent( Event.Type.WEATHER_CHANGE, wL, Event.Priority.Highest, this );
 		pm.registerEvent( Event.Type.THUNDER_CHANGE, wL, Event.Priority.Highest, this );
 		pm.registerEvent( Event.Type.LIGHTNING_STRIKE, wL, Event.Priority.Highest, this );
+		pm.registerEvent(Event.Type.SNOW_FORM, blockL, Event.Priority.Highest, this);
 		PluginCommand command = this.getCommand("rain");
 		command.setExecutor(commandL);
 		PluginCommand command2 = this.getCommand("rainclear");
