@@ -26,7 +26,6 @@ public class RandomWeather extends JavaPlugin
 	private static PermissionHandler Permissions;
 	public Configuration config;
 	public final Logger log = Logger.getLogger( "Minecraft" );
-	public String playerweatherevent = "";
 	ConcurrentHashMap lastweather = new ConcurrentHashMap();
 	
 	public void onEnable( )
