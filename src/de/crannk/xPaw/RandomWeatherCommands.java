@@ -25,11 +25,36 @@ public class RandomWeatherCommands implements CommandExecutor {
 				if(plugin.hasPermissions(player, "RandomWeather.rain")) {
 					try {
 						if(args.length != 0) {
-							sender.getServer().getWorld(args[0]).setStorm(true);
-							player.sendMessage(ChatColor.GREEN + "It starts to rain in world \"" + args[0] + "\"");
+							long lasttime = 0;
+							try {
+								lasttime = (Long) plugin.lastweather.get(args[0]);
+							}catch(Exception e) {
+								
+							}
+							if(plugin.isNodeDisabled("disable-weather", args[0])) {
+								player.sendMessage(ChatColor.RED + "Uhoh, weather is disabled in this world.");
+							}else if((plugin.getIntValue("minimum-rain-wait", args[0], 600)*1000) >= System.currentTimeMillis() - lasttime) {
+								player.sendMessage(ChatColor.RED + "Please wait, you can't trigger a storm just yet.");
+							}else {
+								sender.getServer().getWorld(args[0]).setStorm(true);
+								player.sendMessage(ChatColor.GREEN + "It starts to rain in world \"" + args[0] + "\"");
+							}
 						}else {
-							player.getWorld().setStorm(true);
-							player.sendMessage(ChatColor.GREEN + "It starts to rain...");
+							String theworld = player.getWorld().getName();
+							long lasttime = 0;
+							try {
+								lasttime = (Long) plugin.lastweather.get(theworld);
+							}catch(Exception e) {
+								
+							}
+							if(plugin.isNodeDisabled("disable-weather", theworld)) {
+								player.sendMessage(ChatColor.RED + "Uhoh, weather is disabled in this world.");
+							}else if((plugin.getIntValue("minimum-rain-wait", theworld, 600)*1000) >= System.currentTimeMillis() - lasttime) {
+								player.sendMessage(ChatColor.RED + "Please wait, you can't trigger a storm just yet.");
+							}else {
+								player.getWorld().setStorm(true);
+								player.sendMessage(ChatColor.GREEN + "It starts to rain...");
+							}
 						}
 					}catch (Exception e) {
 						return false;
@@ -38,13 +63,24 @@ public class RandomWeatherCommands implements CommandExecutor {
 				return true;
 			}if(commandLabel.equalsIgnoreCase("thunder")){
 				if(plugin.hasPermissions(player, "RandomWeather.thunder")) {
+					
 					try {
 						if(args.length != 0) {
-							sender.getServer().getWorld(args[0]).setThundering(true);
-							player.sendMessage(ChatColor.GREEN + "It starts to thunder in world \"" + args[0] + "\"");
+							if(plugin.isNodeDisabled( "disable-thunder",args[0] )) {
+								player.sendMessage(ChatColor.RED + "Thunder is disabled in this world, sorry...");
+							}else {
+								sender.getServer().getWorld(args[0]).setThundering(true);
+								player.sendMessage(ChatColor.GREEN + "It starts to thunder in world \"" + args[0] + "\"");
+							}
+							//plugin.playerweatherevent = player.getName();
 						}else {
-							player.getWorld().setThundering(true);
-							player.sendMessage(ChatColor.GREEN + "It starts to thunder...");
+							if(plugin.isNodeDisabled( "disable-thunder", player.getWorld().getName() )) {
+								player.sendMessage(ChatColor.RED + "Thunder is disabled in this world, sorry...");
+							}else {
+								player.getWorld().setThundering(true);
+								player.sendMessage(ChatColor.GREEN + "It starts to thunder...");
+							}
+							//plugin.playerweatherevent = player.getName();
 						}
 					}catch (Exception e) {
 						return false;

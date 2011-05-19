@@ -3,6 +3,7 @@ package de.crannk.xPaw;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -25,6 +26,8 @@ public class RandomWeather extends JavaPlugin
 	private static PermissionHandler Permissions;
 	public Configuration config;
 	public final Logger log = Logger.getLogger( "Minecraft" );
+	public String playerweatherevent = "";
+	ConcurrentHashMap lastweather = new ConcurrentHashMap();
 	
 	public void onEnable( )
 	{
