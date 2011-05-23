@@ -1,6 +1,6 @@
 name: WeatherRestrictions
 main: de.crannk.xPaw.RandomWeather
-version: 1.4
+version: 1.4.1
 description: Configurable semi-random weather
 author: xPaw & Tux2
 commands:
