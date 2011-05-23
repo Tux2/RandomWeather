@@ -76,18 +76,44 @@ public class RandomWeather extends JavaPlugin
 		pm.registerEvent( Event.Type.THUNDER_CHANGE, wL, Event.Priority.Highest, this );
 		pm.registerEvent( Event.Type.LIGHTNING_STRIKE, wL, Event.Priority.Highest, this );
 		pm.registerEvent(Event.Type.SNOW_FORM, blockL, Event.Priority.Highest, this);
-		PluginCommand command = this.getCommand("rain");
-		command.setExecutor(commandL);
-		PluginCommand command2 = this.getCommand("rainclear");
-		command2.setExecutor(commandL);
-		PluginCommand command3 = this.getCommand("clearrain");
-		command3.setExecutor(commandL);
-		PluginCommand command4 = this.getCommand("thunder");
-		command4.setExecutor(commandL);
-		PluginCommand command5 = this.getCommand("weatherstats");
-		command5.setExecutor(commandL);
-		PluginCommand command6 = this.getCommand("lightning");
-		command6.setExecutor(commandL);
+		PluginCommand batchcommand = this.getCommand("wr");
+		batchcommand.setExecutor(commandL);
+		try {
+			PluginCommand command = this.getCommand("rain");
+			command.setExecutor(commandL);
+		}catch (NullPointerException e) {
+			System.out.println("WeatherRestrictions: Another plugin is using /rain, please use /wr rain");
+		}
+		try {
+			PluginCommand command2 = this.getCommand("rainclear");
+			command2.setExecutor(commandL);
+		}catch (NullPointerException e) {
+			System.out.println("WeatherRestrictions: Another plugin is using /rainclear, please use /wr clear");
+		}
+		try {
+			PluginCommand command3 = this.getCommand("clearrain");
+			command3.setExecutor(commandL);
+		}catch (NullPointerException e) {
+			System.out.println("WeatherRestrictions: Another plugin is using /clearrain, please use /wr clear");
+		}
+		try {
+			PluginCommand commandthunder = this.getCommand("thunder");
+			commandthunder.setExecutor(commandL);
+		}catch (NullPointerException e) {
+			System.out.println("WeatherRestrictions: Another plugin is using /thunder, please use /wr thunder");
+		}
+		try {
+			PluginCommand command5 = this.getCommand("weatherstats");
+			command5.setExecutor(commandL);
+		}catch (NullPointerException e) {
+			System.out.println("WeatherRestrictions: Another plugin is using /weatherstats, please use /wr stats");
+		}
+		try {
+			PluginCommand commandlightning = this.getCommand("lightning");
+			commandlightning.setExecutor(commandL);
+		}catch (NullPointerException e) {
+			System.out.println("WeatherRestrictions: Another plugin is using /lightning, please use /wr lightning");
+		}
 		
 		log.info( pdfFile.getName() + " version " + pdfFile.getVersion() + " is enabled!" );
 	}
