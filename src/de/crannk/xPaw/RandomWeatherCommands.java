@@ -1,8 +1,10 @@
 package de.crannk.xPaw;
 
 import java.util.List;
+import java.util.Random;
 
 import org.bukkit.ChatColor;
+import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -121,6 +123,16 @@ public class RandomWeatherCommands implements CommandExecutor {
 					}catch (Exception e) {
 						return false;
 					}
+				}
+				return true;
+			}else if(commandLabel.equalsIgnoreCase("lightning")){
+				if(plugin.hasPermissions(player, "RandomWeather.lightning")) {
+					Location loc = player.getLocation().clone();
+					Random rand = new Random();
+					loc.setX(loc.getX() + (rand.nextInt(20) - 10));
+					loc.setZ(loc.getZ() + (rand.nextInt(20) - 10));
+					player.getWorld().strikeLightning(loc);
+					player.getWorld().strikeLightningEffect(loc);
 				}
 				return true;
 			} //If this has happened the function will break and return true. if this hasn't happened the a value of false will be returned.

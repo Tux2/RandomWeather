@@ -2,6 +2,7 @@ package de.crannk.xPaw;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.logging.Level;
@@ -18,12 +19,16 @@ import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.util.config.Configuration;
+import org.rominos2.ThunderTower.ThunderTower;
+import org.rominos2.ThunderTower.ThunderTowerWeatherListener;
+
 import com.nijiko.permissions.PermissionHandler;
 import com.nijikokun.bukkit.Permissions.Permissions;
 
 public class RandomWeather extends JavaPlugin
 {
 	private static PermissionHandler Permissions;
+	ThunderTower thunderTower;
 	public Configuration config;
 	public final Logger log = Logger.getLogger( "Minecraft" );
 	ConcurrentHashMap lastweather = new ConcurrentHashMap();
@@ -49,6 +54,7 @@ public class RandomWeather extends JavaPlugin
 			}
 		}
 		setupPermissions();
+		setupThunderTower();
 		config = getConfiguration();
 		
 		final RandomWeatherWeatherListener wL = new RandomWeatherWeatherListener( this );
@@ -80,6 +86,8 @@ public class RandomWeather extends JavaPlugin
 		command4.setExecutor(commandL);
 		PluginCommand command5 = this.getCommand("weatherstats");
 		command5.setExecutor(commandL);
+		PluginCommand command6 = this.getCommand("lightning");
+		command6.setExecutor(commandL);
 		
 		log.info( pdfFile.getName() + " version " + pdfFile.getVersion() + " is enabled!" );
 	}
@@ -125,6 +133,17 @@ public class RandomWeather extends JavaPlugin
             }
         }
     }
+	
+	private void setupThunderTower() {
+        ThunderTower tt = (ThunderTower)this.getServer().getPluginManager().getPlugin("ThunderTower");
+
+        if (thunderTower == null) {
+            if (tt != null) {
+                thunderTower = tt;
+            } else {
+            }
+        }
+    }
     
     public static boolean hasPermissions(Player player, String node) {
         if (Permissions != null) {
@@ -133,4 +152,24 @@ public class RandomWeather extends JavaPlugin
             return player.isOp();
         }
     }
+
+	public double getDoubleValue(String name, String worldName, int thedefault) {
+		return config.getDouble(worldName + "." + name, thedefault);
+	}
+
+	public void setConfigNode(String name, String worldName,
+			double value) {
+		config.setProperty( worldName + "." + name, value );
+		
+	}
+	
+	boolean stringToBool(String thebool) {
+		boolean result;
+		if (thebool.trim().equalsIgnoreCase("true") || thebool.trim().equalsIgnoreCase("yes")) {
+	    	result = true;
+	    } else {
+	    	result = false;
+	    }
+		return result;
+	}
 }

@@ -34,6 +34,8 @@ public class RandomWeatherWorldListener extends WorldListener
 		Boolean alwaysThunderstorms = plugin.isNodeDisabled( "makeall-thunderstorms", worldName, false );
 		int minWaitWeather = plugin.getIntValue("minimum-rain-wait", worldName, 600);
 		int maxWaitWeather = plugin.getIntValue( "max-rain-wait", worldName, 1000 );
+		double superchargedchance = plugin.getDoubleValue( "supercharged-thunder-chance", worldName, 0 );
+		double superchargedexplosion = plugin.getDoubleValue( "supercharged-explosion-radius", worldName, 3 );
 		
 		if( disWeather && world.hasStorm() )
 		{
@@ -63,6 +65,8 @@ public class RandomWeatherWorldListener extends WorldListener
 		plugin.setConfigNode( "minimum-rain-wait", worldName, minWaitWeather );
 		plugin.setConfigNode( "max-rain-wait", worldName, maxWaitWeather );
 		plugin.setConfigNode("makeall-thunderstorms", worldName, alwaysThunderstorms);
+		plugin.setConfigNode("supercharged-thunder-chance", worldName, superchargedchance);
+		plugin.setConfigNode("supercharged-explosion-radius", worldName, superchargedexplosion);
 		plugin.config.save();
 	}
 }

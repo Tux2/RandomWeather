@@ -1,6 +1,6 @@
 name: WeatherRestrictions
 main: de.crannk.xPaw.RandomWeather
-version: 1.3
+version: 1.4
 description: Configurable semi-random weather
 author: xPaw & Tux2
 commands:
@@ -24,3 +24,7 @@ commands:
       description: Gives you information on the current storm status in all worlds.
       usage: |
        /weatherstats
+   lightning:
+      description: Strikes a random location within 20 blocks of you
+      usage: |
+       /lightning
