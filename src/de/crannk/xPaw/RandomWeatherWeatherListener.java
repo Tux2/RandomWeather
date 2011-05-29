@@ -52,9 +52,50 @@ public class RandomWeatherWeatherListener extends WeatherListener
 					//If so, let's add some thunder in the mix
 					event.getWorld().setThundering(true);
 				}
+				if(plugin.getIntValue("max-rain-duration", event.getWorld().getName(), -1) > 0 ) {
+					WeatherStarts thestart;
+					if(plugin.worldsweather.containsKey(event.getWorld().getName())) {
+						thestart = plugin.worldsweather.get(event.getWorld().getName());
+						thestart.setType(WeatherStarts.STOPRAIN);
+						thestart.setDueTime((plugin.getIntValue("max-rain-duration", event.getWorld().getName(), -1) * 1000) + System.currentTimeMillis());
+					}else {
+						thestart = new WeatherStarts(event.getWorld().getName(), 
+								(plugin.getIntValue("max-rain-duration", event.getWorld().getName(), -1) * 1000) + System.currentTimeMillis(),
+								WeatherStarts.STOPRAIN);
+					}
+					if(!plugin.timeweather.contains(thestart)) {
+						plugin.timeweather.add(thestart);
+					}
+					plugin.dispatchThread.interrupt();
+				}
 			}else if(event.getWorld().hasStorm()) {
 				//Record when the rain stopped
 				plugin.lastweather.put(event.getWorld().getName(), System.currentTimeMillis());
+				if(plugin.getIntValue("max-rain-wait", event.getWorld().getName(), -1) > 0 ) {
+					WeatherStarts thestart;
+					if(plugin.worldsweather.containsKey(event.getWorld().getName())) {
+						thestart = plugin.worldsweather.get(event.getWorld().getName());
+						thestart.setType(WeatherStarts.STARTRAIN);
+						thestart.setDueTime((plugin.getIntValue("max-rain-wait", event.getWorld().getName(), -1) * 1000) + System.currentTimeMillis());
+					}else {
+						thestart = new WeatherStarts(event.getWorld().getName(), 
+								(plugin.getIntValue("max-rain-wait", event.getWorld().getName(), -1) * 1000) + System.currentTimeMillis(),
+								WeatherStarts.STARTRAIN);
+					}
+					if(!plugin.timeweather.contains(thestart)) {
+						plugin.timeweather.add(thestart);
+					}
+					plugin.dispatchThread.interrupt();
+				}else {
+					if(plugin.worldsweather.containsKey(event.getWorld().getName())) {
+						WeatherStarts thestart = plugin.worldsweather.get(event.getWorld().getName());
+						if(plugin.timeweather.contains(thestart)) {
+							plugin.timeweather.remove(thestart);
+							plugin.dispatchThread.interrupt();
+						}
+					}
+				}
+				
 			}
 		}
 	}

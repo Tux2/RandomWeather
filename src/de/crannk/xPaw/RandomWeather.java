@@ -3,6 +3,8 @@ package de.crannk.xPaw;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.logging.Level;
@@ -25,13 +27,16 @@ import org.rominos2.ThunderTower.ThunderTowerWeatherListener;
 import com.nijiko.permissions.PermissionHandler;
 import com.nijikokun.bukkit.Permissions.Permissions;
 
-public class RandomWeather extends JavaPlugin
+public class RandomWeather extends JavaPlugin implements Runnable
 {
 	private static PermissionHandler Permissions;
 	ThunderTower thunderTower;
 	public Configuration config;
+	Thread dispatchThread;
 	public final Logger log = Logger.getLogger( "Minecraft" );
 	ConcurrentHashMap lastweather = new ConcurrentHashMap();
+	LinkedList<WeatherStarts> timeweather = new LinkedList<WeatherStarts>();
+	ConcurrentHashMap<String, WeatherStarts> worldsweather = new ConcurrentHashMap<String, WeatherStarts>();
 	
 	public void onEnable( )
 	{
@@ -56,6 +61,9 @@ public class RandomWeather extends JavaPlugin
 		setupPermissions();
 		setupThunderTower();
 		config = getConfiguration();
+
+		dispatchThread = new Thread(this);
+        dispatchThread.start();
 		
 		final RandomWeatherWeatherListener wL = new RandomWeatherWeatherListener( this );
 		final RandomWeatherWorldListener worldL = new RandomWeatherWorldListener( this );
@@ -197,5 +205,46 @@ public class RandomWeather extends JavaPlugin
 	    	result = false;
 	    }
 		return result;
+	}
+
+	@Override
+	public synchronized void run() {
+		boolean running = true;
+        while (running) {
+
+            // If the list is empty, wait until something gets added.
+            if (timeweather.size() == 0) {
+                try {
+                    wait();
+                }
+                catch (InterruptedException e) {
+                    // Do nothing.
+                }
+                
+            }
+
+            WeatherStarts reminder = (WeatherStarts) timeweather.getFirst();
+            long delay = reminder.getDueTime() - System.currentTimeMillis();
+            if (delay > 0) {
+                try {
+                    wait(delay);
+                }
+                catch (InterruptedException e) {
+                    // A new weather event was added. Sort the list.
+                    Collections.sort(timeweather);
+                }
+            }
+            else {
+            	//Remove this before another thread might add it back...
+            	timeweather.remove(reminder);
+            	if(reminder.getType() == WeatherStarts.STARTRAIN) {
+            		getServer().getWorld(reminder.getWorld()).setStorm(true);
+            	}else if(reminder.getType() == WeatherStarts.STOPRAIN) {
+            		getServer().getWorld(reminder.getWorld()).setStorm(false);
+            		getServer().getWorld(reminder.getWorld()).setThundering(false);
+            	}
+            	getServer().getWorld(reminder.getWorld()).setStorm(reminder.getType() == WeatherStarts.STARTRAIN);
+            }
+        }
 	}
 }
