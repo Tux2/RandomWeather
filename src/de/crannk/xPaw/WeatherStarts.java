@@ -16,7 +16,7 @@ public class WeatherStarts implements Comparable {
 		this.type = type;
 	}
 	
-	public int compareTo(Object o) {
+	public synchronized int compareTo(Object o) {
         if (o instanceof WeatherStarts) {
         	WeatherStarts other = (WeatherStarts) o;
             if (dueTime < other.dueTime) {
@@ -29,27 +29,27 @@ public class WeatherStarts implements Comparable {
         return 0;
     }
 
-	public long getDueTime() {
+	public synchronized long getDueTime() {
 		return dueTime;
 	}
 
-	public void setDueTime(long dueTime) {
+	public synchronized void setDueTime(long dueTime) {
 		this.dueTime = dueTime;
 	}
 
-	public String getWorld() {
+	public synchronized String getWorld() {
 		return world;
 	}
 
-	public void setWorld(String world) {
+	public synchronized void setWorld(String world) {
 		this.world = world;
 	}
 
-	public int getType() {
+	public synchronized int getType() {
 		return type;
 	}
 
-	public void setType(int type) {
+	public synchronized void setType(int type) {
 		this.type = type;
 	}
 

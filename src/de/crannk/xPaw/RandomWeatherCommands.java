@@ -20,7 +20,7 @@ public class RandomWeatherCommands implements CommandExecutor {
 		plugin = randomWeather;
 	}
 
-	public boolean onCommand(CommandSender sender, Command cmd, String commandLabel, String[] args){
+	public synchronized boolean onCommand(CommandSender sender, Command cmd, String commandLabel, String[] args){
 		if (sender instanceof Player) {
 			Player player = (Player)sender;
 			if(commandLabel.equalsIgnoreCase("rain")){
@@ -78,7 +78,7 @@ public class RandomWeatherCommands implements CommandExecutor {
 		return false; 
 	}
 	
-	private boolean rain (Player player, String args[]){
+	private synchronized boolean rain (Player player, String args[]){
 		if(plugin.hasPermissions(player, "RandomWeather.rain")) {
 			try {
 				if(args.length != 0) {
@@ -120,7 +120,7 @@ public class RandomWeatherCommands implements CommandExecutor {
 		return true;
 	}
 	
-	private boolean thunder (Player player, String args[]){
+	private synchronized boolean thunder (Player player, String args[]){
 		if(plugin.hasPermissions(player, "RandomWeather.thunder")) {
 			
 			try {
@@ -148,7 +148,7 @@ public class RandomWeatherCommands implements CommandExecutor {
 		return true;
 	}
 	
-	private boolean clearrain (Player player, String args[]){
+	private synchronized boolean clearrain (Player player, String args[]){
 		if(plugin.hasPermissions(player, "RandomWeather.clear")) {
 			try {
 				if(args.length != 0) {
@@ -167,7 +167,7 @@ public class RandomWeatherCommands implements CommandExecutor {
 		return true;
 	}
 	
-	private boolean stats (Player player) {
+	private synchronized boolean stats (Player player) {
 		if(plugin.hasPermissions(player, "RandomWeather.stats")) {
 			try {
 				List<World> worlds = player.getServer().getWorlds();
@@ -188,7 +188,7 @@ public class RandomWeatherCommands implements CommandExecutor {
 		return true;
 	}
 	
-	private boolean lightning (Player player) {
+	private synchronized boolean lightning (Player player) {
 		if(plugin.hasPermissions(player, "RandomWeather.lightning")) {
 			Location loc = player.getLocation().clone();
 			Random rand = new Random();

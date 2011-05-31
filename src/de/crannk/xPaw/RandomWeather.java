@@ -71,6 +71,8 @@ public class RandomWeather extends JavaPlugin implements Runnable
 		final RandomWeatherCommands commandL = new RandomWeatherCommands( this );
 		final PluginManager pm = getServer().getPluginManager();
 		final PluginDescriptionFile pdfFile = this.getDescription();
+		timeweather.clear();
+		worldsweather.clear();
 		
 		List<World> worlds = getServer().getWorlds();
 		

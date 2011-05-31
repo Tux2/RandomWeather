@@ -18,7 +18,7 @@ public class RandomWeatherWorldListener extends WorldListener
 		WorldLoaded( event.getWorld() );
 	}
 	
-	public void WorldLoaded( World world )
+	public synchronized void WorldLoaded( World world )
 	{
 		String worldName = world.getName();
 		
