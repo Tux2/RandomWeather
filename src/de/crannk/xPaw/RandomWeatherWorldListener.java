@@ -33,7 +33,7 @@ public class RandomWeatherWorldListener extends WorldListener
 		Boolean disSnow = plugin.isNodeDisabled( "disable-snow-accumulation", worldName );
 		Boolean alwaysThunderstorms = plugin.isNodeDisabled( "makeall-thunderstorms", worldName, false );
 		int minWaitWeather = plugin.getIntValue("minimum-rain-wait", worldName, 600);
-		int maxWaitWeather = plugin.getIntValue( "max-rain-wait", worldName, 1000 );
+		int maxWaitWeather = plugin.getIntValue( "max-rain-wait", worldName, -1 );
 		int maxWaitRain = plugin.getIntValue( "max-rain-duration", worldName, -1 );
 		double superchargedchance = plugin.getDoubleValue( "supercharged-thunder-chance", worldName, 0 );
 		double superchargedexplosion = plugin.getDoubleValue( "supercharged-explosion-radius", worldName, 3 );
