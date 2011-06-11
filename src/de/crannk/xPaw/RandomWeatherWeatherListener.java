@@ -141,6 +141,10 @@ public class RandomWeatherWeatherListener extends WeatherListener
 					}else {
 						//System.out.println("Tower found! Not activating super lightning!");
 					}
+				}else {
+					Location loc = event.getLightning().getLocation();
+					//System.out.println("Tower not found! Activating super lightning!");
+					((org.bukkit.craftbukkit.CraftWorld)event.getWorld()).getHandle().createExplosion(null, loc.getX(), loc.getY(), loc.getZ(), (float)plugin.getIntValue("supercharged-explosion-radius", event.getWorld().getName(), 3), true);
 				}
 
 				//System.out.println("Lightning hit: " + event.getLightning().getLocation().getBlockX() + ", " + event.getLightning().getLocation().getBlockY() + ", " + event.getLightning().getLocation().getBlockZ());
