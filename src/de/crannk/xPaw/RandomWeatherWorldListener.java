@@ -31,6 +31,7 @@ public class RandomWeatherWorldListener extends WorldListener
 		Boolean disThunder   = plugin.isNodeDisabled( "disable-thunder", worldName );
 		Boolean disLightning = plugin.isNodeDisabled( "disable-lightning", worldName );
 		Boolean disSnow = plugin.isNodeDisabled( "disable-snow-accumulation", worldName );
+		Boolean disIce = plugin.isNodeDisabled( "disable-ice-accumulation", worldName );
 		Boolean alwaysThunderstorms = plugin.isNodeDisabled( "makeall-thunderstorms", worldName, false );
 		int minWaitWeather = plugin.getIntValue("minimum-rain-wait", worldName, 600);
 		int maxWaitWeather = plugin.getIntValue( "max-rain-wait", worldName, -1 );
@@ -105,6 +106,7 @@ public class RandomWeatherWorldListener extends WorldListener
 		plugin.setConfigNode( "disable-thunder", worldName, disThunder );
 		plugin.setConfigNode( "disable-lightning", worldName, disLightning );
 		plugin.setConfigNode( "disable-snow-accumulation", worldName, disSnow );
+		plugin.setConfigNode( "disable-ice-accumulation", worldName, disIce );
 		plugin.setConfigNode( "minimum-rain-wait", worldName, minWaitWeather );
 		plugin.setConfigNode( "max-rain-wait", worldName, maxWaitWeather );
 		plugin.setConfigNode( "max-rain-duration", worldName, maxWaitRain );

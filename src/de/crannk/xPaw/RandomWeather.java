@@ -86,6 +86,7 @@ public class RandomWeather extends JavaPlugin implements Runnable
 		pm.registerEvent( Event.Type.THUNDER_CHANGE, wL, Event.Priority.Highest, this );
 		pm.registerEvent( Event.Type.LIGHTNING_STRIKE, wL, Event.Priority.Highest, this );
 		pm.registerEvent(Event.Type.SNOW_FORM, blockL, Event.Priority.Highest, this);
+		pm.registerEvent(Event.Type.BLOCK_FORM, blockL, Event.Priority.Highest, this);
 		PluginCommand batchcommand = this.getCommand("wr");
 		batchcommand.setExecutor(commandL);
 		try {
@@ -239,13 +240,14 @@ public class RandomWeather extends JavaPlugin implements Runnable
             else {
             	//Remove this before another thread might add it back...
             	timeweather.remove(reminder);
-            	if(reminder.getType() == WeatherStarts.STARTRAIN) {
+            	getServer().getScheduler().scheduleSyncDelayedTask(this, new DoRain(this, reminder));
+            	/*if(reminder.getType() == WeatherStarts.STARTRAIN) {
+            		
             		getServer().getWorld(reminder.getWorld()).setStorm(true);
             	}else if(reminder.getType() == WeatherStarts.STOPRAIN) {
             		getServer().getWorld(reminder.getWorld()).setStorm(false);
             		getServer().getWorld(reminder.getWorld()).setThundering(false);
-            	}
-            	getServer().getWorld(reminder.getWorld()).setStorm(reminder.getType() == WeatherStarts.STARTRAIN);
+            	}*/
             }
         }
 	}
