@@ -85,7 +85,7 @@ public class RandomWeather extends JavaPlugin implements Runnable
 		pm.registerEvent( Event.Type.WEATHER_CHANGE, wL, Event.Priority.Highest, this );
 		pm.registerEvent( Event.Type.THUNDER_CHANGE, wL, Event.Priority.Highest, this );
 		pm.registerEvent( Event.Type.LIGHTNING_STRIKE, wL, Event.Priority.Highest, this );
-		pm.registerEvent(Event.Type.SNOW_FORM, blockL, Event.Priority.Highest, this);
+		//pm.registerEvent(Event.Type.SNOW_FORM, blockL, Event.Priority.Highest, this);
 		pm.registerEvent(Event.Type.BLOCK_FORM, blockL, Event.Priority.Highest, this);
 		PluginCommand batchcommand = this.getCommand("wr");
 		batchcommand.setExecutor(commandL);
