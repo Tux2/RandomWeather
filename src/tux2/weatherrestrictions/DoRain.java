@@ -1,13 +1,13 @@
-package de.crannk.xPaw;
+package tux2.weatherrestrictions;
 
 import org.bukkit.World;
 
 public class DoRain implements Runnable {
 
 	WeatherStarts world;
-	RandomWeather plugin;
+	WeatherRestrictions plugin;
 	
-	public DoRain(RandomWeather plugin, WeatherStarts world) {
+	public DoRain(WeatherRestrictions plugin, WeatherStarts world) {
 		this.plugin = plugin;
 		this.world = world;
 	}

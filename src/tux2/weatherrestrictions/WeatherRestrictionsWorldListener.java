@@ -1,14 +1,14 @@
-package de.crannk.xPaw;
+package tux2.weatherrestrictions;
 
 import org.bukkit.World;
 import org.bukkit.event.world.WorldListener;
 import org.bukkit.event.world.WorldLoadEvent;
 
-public class RandomWeatherWorldListener extends WorldListener
+public class WeatherRestrictionsWorldListener extends WorldListener
 {
-	private RandomWeather plugin;
+	private WeatherRestrictions plugin;
 	
-	public RandomWeatherWorldListener( RandomWeather plugin )
+	public WeatherRestrictionsWorldListener( WeatherRestrictions plugin )
 	{
 		this.plugin = plugin;
 	}
@@ -24,7 +24,7 @@ public class RandomWeatherWorldListener extends WorldListener
 		
 		if( !plugin.config.getKeys( null ).contains( worldName ) )
 		{
-			plugin.log.info( "[RandomWeather] " + worldName + " - no configuration, generating defaults." );
+			plugin.log.info( "[WeatherRestrictions] " + worldName + " - no configuration, generating defaults." );
 		}
 		
 		Boolean disWeather   = plugin.isNodeDisabled( "disable-weather", worldName );
@@ -42,7 +42,7 @@ public class RandomWeatherWorldListener extends WorldListener
 		if( disWeather && world.hasStorm() )
 		{
 			world.setStorm( false );
-			plugin.log.info( "[RandomWeather] Stopped storm in " + worldName );
+			plugin.log.info( "[WeatherRestrictions] Stopped storm in " + worldName );
 		}else if (world.hasStorm()) {
 			if(maxWaitRain > 0 ) {
 				WeatherStarts thestart;
@@ -95,12 +95,12 @@ public class RandomWeatherWorldListener extends WorldListener
 		if( disThunder && world.isThundering() )
 		{
 			world.setThundering( false );
-			plugin.log.info( "[RandomWeather] Stopped thunder in " + worldName );
+			plugin.log.info( "[WeatherRestrictions] Stopped thunder in " + worldName );
 		}
 		
-	//	plugin.log.info( "[RandomWeather] " + worldName + " - Weather  : " + disWeather.toString() );
-	//	plugin.log.info( "[RandomWeather] " + worldName + " - Thunder  : " + disThunder.toString() );
-	//	plugin.log.info( "[RandomWeather] " + worldName + " - Lightning: " + disLightning.toString() );
+	//	plugin.log.info( "[WeatherRestrictions] " + worldName + " - Weather  : " + disWeather.toString() );
+	//	plugin.log.info( "[WeatherRestrictions] " + worldName + " - Thunder  : " + disThunder.toString() );
+	//	plugin.log.info( "[WeatherRestrictions] " + worldName + " - Lightning: " + disLightning.toString() );
 		
 		plugin.setConfigNode( "disable-weather", worldName, disWeather );
 		plugin.setConfigNode( "disable-thunder", worldName, disThunder );

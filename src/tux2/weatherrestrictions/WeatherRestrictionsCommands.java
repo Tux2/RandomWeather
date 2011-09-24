@@ -1,4 +1,4 @@
-package de.crannk.xPaw;
+package tux2.weatherrestrictions;
 
 import java.util.List;
 import java.util.Random;
@@ -11,11 +11,11 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-public class RandomWeatherCommands implements CommandExecutor {
+public class WeatherRestrictionsCommands implements CommandExecutor {
 	
-	RandomWeather plugin;
+	WeatherRestrictions plugin;
 
-	public RandomWeatherCommands(RandomWeather randomWeather) {
+	public WeatherRestrictionsCommands(WeatherRestrictions randomWeather) {
 		super();
 		plugin = randomWeather;
 	}
@@ -35,21 +35,21 @@ public class RandomWeatherCommands implements CommandExecutor {
 				return lightning(player);
 			}else if(commandLabel.equalsIgnoreCase("wr")) {
 				if(args.length == 0) {
-					if(plugin.hasPermissions(player, "RandomWeather.help")) {
+					if(plugin.hasPermissions(player, "weatherRestrictions.help")) {
 						player.sendMessage(ChatColor.GREEN + "Weather Restrictions Command list:");
-						if(plugin.hasPermissions(player, "RandomWeather.rain")) {
+						if(plugin.hasPermissions(player, "weatherRestrictions.rain")) {
 							player.sendMessage(ChatColor.GREEN + "/wr rain [world] - make it rain");
 						}
-						if(plugin.hasPermissions(player, "RandomWeather.thunder")) {
+						if(plugin.hasPermissions(player, "weatherRestrictions.thunder")) {
 							player.sendMessage(ChatColor.GREEN + "/wr thunder [world] - make it a thunderstorm");
 						}
-						if(plugin.hasPermissions(player, "RandomWeather.clear")) {
+						if(plugin.hasPermissions(player, "weatherRestrictions.clear")) {
 							player.sendMessage(ChatColor.GREEN + "/wr clear [world] - clears all weather");
 						}
-						if(plugin.hasPermissions(player, "RandomWeather.lightning")) {
+						if(plugin.hasPermissions(player, "weatherRestrictions.lightning")) {
 							player.sendMessage(ChatColor.GREEN + "/wr lightning - send a lightning bolt near you");
 						}
-						if(plugin.hasPermissions(player, "RandomWeather.stats")) {
+						if(plugin.hasPermissions(player, "weatherRestrictions.stats")) {
 							player.sendMessage(ChatColor.GREEN + "/wr stats - shows you the current weather in all worlds");
 						}
 					}
@@ -79,7 +79,7 @@ public class RandomWeatherCommands implements CommandExecutor {
 	}
 	
 	private synchronized boolean rain (Player player, String args[]){
-		if(plugin.hasPermissions(player, "RandomWeather.rain")) {
+		if(plugin.hasPermissions(player, "weatherRestrictions.rain")) {
 			try {
 				if(args.length != 0) {
 					long lasttime = 0;
@@ -121,7 +121,7 @@ public class RandomWeatherCommands implements CommandExecutor {
 	}
 	
 	private synchronized boolean thunder (Player player, String args[]){
-		if(plugin.hasPermissions(player, "RandomWeather.thunder")) {
+		if(plugin.hasPermissions(player, "weatherRestrictions.thunder")) {
 			
 			try {
 				if(args.length != 0) {
@@ -149,7 +149,7 @@ public class RandomWeatherCommands implements CommandExecutor {
 	}
 	
 	private synchronized boolean clearrain (Player player, String args[]){
-		if(plugin.hasPermissions(player, "RandomWeather.clear")) {
+		if(plugin.hasPermissions(player, "weatherRestrictions.clear")) {
 			try {
 				if(args.length != 0) {
 					player.getServer().getWorld(args[0]).setStorm(false);
@@ -168,7 +168,7 @@ public class RandomWeatherCommands implements CommandExecutor {
 	}
 	
 	private synchronized boolean stats (Player player) {
-		if(plugin.hasPermissions(player, "RandomWeather.stats")) {
+		if(plugin.hasPermissions(player, "weatherRestrictions.stats")) {
 			try {
 				List<World> worlds = player.getServer().getWorlds();
 				for(World theworld : worlds) {
@@ -189,7 +189,7 @@ public class RandomWeatherCommands implements CommandExecutor {
 	}
 	
 	private synchronized boolean lightning (Player player) {
-		if(plugin.hasPermissions(player, "RandomWeather.lightning")) {
+		if(plugin.hasPermissions(player, "weatherRestrictions.lightning")) {
 			Location loc = player.getLocation().clone();
 			Random rand = new Random();
 			loc.setX(loc.getX() + (rand.nextInt(20) - 10));

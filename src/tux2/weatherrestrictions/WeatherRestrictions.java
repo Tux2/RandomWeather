@@ -1,4 +1,4 @@
-package de.crannk.xPaw;
+package tux2.weatherrestrictions;
 
 import java.io.File;
 import java.io.IOException;
@@ -22,12 +22,11 @@ import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.util.config.Configuration;
 import org.rominos2.ThunderTower.ThunderTower;
-import org.rominos2.ThunderTower.ThunderTowerWeatherListener;
 
 import com.nijiko.permissions.PermissionHandler;
 import com.nijikokun.bukkit.Permissions.Permissions;
 
-public class RandomWeather extends JavaPlugin implements Runnable
+public class WeatherRestrictions extends JavaPlugin implements Runnable
 {
 	private static PermissionHandler Permissions;
 	ThunderTower thunderTower;
@@ -65,10 +64,10 @@ public class RandomWeather extends JavaPlugin implements Runnable
 		dispatchThread = new Thread(this);
         dispatchThread.start();
 		
-		final RandomWeatherWeatherListener wL = new RandomWeatherWeatherListener( this );
-		final RandomWeatherWorldListener worldL = new RandomWeatherWorldListener( this );
-		final RandomWeatherBlockListener blockL = new RandomWeatherBlockListener(this);
-		final RandomWeatherCommands commandL = new RandomWeatherCommands( this );
+		final WeatherRestrictionsWeatherListener wL = new WeatherRestrictionsWeatherListener( this );
+		final WeatherRestrictionsWorldListener worldL = new WeatherRestrictionsWorldListener( this );
+		final WeatherRestrictionsBlockListener blockL = new WeatherRestrictionsBlockListener(this);
+		final WeatherRestrictionsCommands commandL = new WeatherRestrictionsCommands( this );
 		final PluginManager pm = getServer().getPluginManager();
 		final PluginDescriptionFile pdfFile = this.getDescription();
 		timeweather.clear();
@@ -186,7 +185,7 @@ public class RandomWeather extends JavaPlugin implements Runnable
         if (Permissions != null) {
             return Permissions.has(player, node);
         } else {
-            return player.isOp();
+            return player.hasPermission(node);
         }
     }
 

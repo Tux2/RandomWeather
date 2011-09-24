@@ -1,6 +1,6 @@
 name: WeatherRestrictions
-main: de.crannk.xPaw.RandomWeather
-version: 1.9
+main: tux2.weatherrestrictions.WeatherRestrictions
+version: 2.0
 description: Configurable semi-random weather
 author: xPaw & Tux2
 commands:
@@ -36,3 +36,35 @@ commands:
        /wr thunder [world] - add thunder to the current storm
        /wr lightning - send a lightning bolt near you
        /wr stats - gives you the current weather in all your worlds
+       
+# SuperPerms data
+permissions:
+    weatherRestrictions.*:
+        default: op
+        description: Gives access to all commands
+        children:
+            weatherRestrictions.rain: true
+            weatherRestrictions.thunder: true
+            weatherRestrictions.clear: true
+            weatherRestrictions.stats: true
+            weatherRestrictions.lightning: true
+    weatherRestrictions.rain:
+        description: Allows you to make it rain.
+        default: op
+        command: "/wr rain [world]"
+    weatherRestrictions.thunder:
+        description: Allows you to make the current rainstorm a thunderstorm.
+        default: op
+        command: "/wr thunder [world]"
+    weatherRestrictions.clear:
+        description: Clear the skies and make it sunny.
+        default: op
+        command: "/wr clear [world]"
+    weatherRestrictions.stats:
+        description: Allows you to get the current weather in all worlds.
+        default: op
+        command: "/wr stats"
+    weatherRestrictions.lightning:
+        description: Allows you to call down lightning bolts.
+        default: op
+        command: "/wr lightning"

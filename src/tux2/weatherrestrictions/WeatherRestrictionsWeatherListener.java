@@ -1,4 +1,4 @@
-package de.crannk.xPaw;
+package tux2.weatherrestrictions;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -15,12 +15,12 @@ import org.bukkit.event.weather.WeatherChangeEvent;
 import org.bukkit.event.weather.WeatherListener;
 import org.rominos2.ThunderTower.ThunderTowerWeatherListener;
 
-public class RandomWeatherWeatherListener extends WeatherListener
+public class WeatherRestrictionsWeatherListener extends WeatherListener
 {
-	private RandomWeather plugin;
+	private WeatherRestrictions plugin;
 	Random rand = new Random();
 	
-	public RandomWeatherWeatherListener( RandomWeather plugin )
+	public WeatherRestrictionsWeatherListener( WeatherRestrictions plugin )
 	{
 		this.plugin = plugin;
 	}
@@ -121,11 +121,11 @@ public class RandomWeatherWeatherListener extends WeatherListener
 					//System.out.println("Thunder towers active in world: " + plugin.thunderTower.getProperties(event.getWorld()).getProperty("active", "true"));
 					//System.out.println("Thunder tower block id: " + plugin.thunderTower.getProperties(event.getWorld()).getTypeID());
 					//System.out.println("Block id: " + event.getLightning().getLocation().getBlock().getTypeId());
-					if(plugin.stringToBool(plugin.thunderTower.getProperties(event.getWorld()).getProperty("active", "true"))
+					/*if(plugin.thunderTower.getProperties(event.getWorld()).getActive()
 							&& plugin.thunderTower.getProperties(event.getWorld()).getTypeID() == event.getLightning().getLocation().getBlock().getTypeId()) {
 						//System.out.println("Searching for a thunder tower!");
 						//Let's not destroy the user's thunder towers...
-						ArrayList<int[]> ttlist = plugin.thunderTower.getTowersList(plugin.getServer().getWorld("world")).list;
+						ArrayList<int[]> ttlist = plugin.thunderTower.getTowersList(plugin.getServer().getWorld("world")).getTowers();
 						for(int j = 0; j < ttlist.size() && towernotfound; j++) {
 							int[] value = ttlist.get(j);
 							Location lightingstrike = event.getLightning().getLocation();
@@ -133,8 +133,8 @@ public class RandomWeatherWeatherListener extends WeatherListener
 								towernotfound = false;
 							}
 						}
-					}
-					if(towernotfound) {
+					}*/
+					if(!plugin.thunderTower.isThunderTowerTop(event.getLightning().getLocation())) {
 						Location loc = event.getLightning().getLocation();
 						//System.out.println("Tower not found! Activating super lightning!");
 						((org.bukkit.craftbukkit.CraftWorld)event.getWorld()).getHandle().createExplosion(null, loc.getX(), loc.getY(), loc.getZ(), (float)plugin.getIntValue("supercharged-explosion-radius", event.getWorld().getName(), 3), true);

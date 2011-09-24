@@ -1,15 +1,15 @@
-package de.crannk.xPaw;
+package tux2.weatherrestrictions;
 
 import org.bukkit.Material;
 import org.bukkit.event.block.BlockFormEvent;
 import org.bukkit.event.block.BlockListener;
 
 
-public class RandomWeatherBlockListener extends BlockListener {
+public class WeatherRestrictionsBlockListener extends BlockListener {
 	
-	RandomWeather plugin;
+	WeatherRestrictions plugin;
 
-	public RandomWeatherBlockListener(RandomWeather plugin) {
+	public WeatherRestrictionsBlockListener(WeatherRestrictions plugin) {
 		this.plugin = plugin;
 	}
 	

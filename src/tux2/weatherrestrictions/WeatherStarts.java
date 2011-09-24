@@ -1,4 +1,4 @@
-package de.crannk.xPaw;
+package tux2.weatherrestrictions;
 
 import java.io.Serializable;
 
