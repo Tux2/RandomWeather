@@ -47,10 +47,12 @@ public class WeatherRestrictionsWeatherListener extends WeatherListener
 			}else if(!plugin.isNodeDisabled("disable-weather", event.getWorld().getName()) && !event.getWorld().hasStorm() 
 					&& ((plugin.getIntValue("minimum-rain-wait", event.getWorld().getName(), 600)*1000) < System.currentTimeMillis() - lasttime)) {
 				//let it rain.
-				//Check to see if we just want thunderstorms...
-				if(plugin.isNodeDisabled("makeall-thunderstorms", event.getWorld().getName(), false)) {
+				//set the ratio of thunderstorms...
+				if(new Random().nextInt(10000) <= (plugin.getDoubleValue("thunderstorm-chance", event.getWorld().getName(), 35)*100)) {
 					//If so, let's add some thunder in the mix
 					event.getWorld().setThundering(true);
+				}else {
+					event.getWorld().setThundering(false);
 				}
 				if(plugin.getIntValue("max-rain-duration", event.getWorld().getName(), -1) > 0 ) {
 					WeatherStarts thestart;

@@ -2,25 +2,21 @@ package tux2.weatherrestrictions;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.bukkit.World;
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandSender;
 import org.bukkit.command.PluginCommand;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.bukkit.util.config.Configuration;
 import org.rominos2.ThunderTower.ThunderTower;
 
 import com.nijiko.permissions.PermissionHandler;
@@ -30,7 +26,8 @@ public class WeatherRestrictions extends JavaPlugin implements Runnable
 {
 	private static PermissionHandler Permissions;
 	ThunderTower thunderTower;
-	public Configuration config;
+	public FileConfiguration config;
+	File yml;
 	Thread dispatchThread;
 	public final Logger log = Logger.getLogger( "Minecraft" );
 	ConcurrentHashMap lastweather = new ConcurrentHashMap();
@@ -41,11 +38,11 @@ public class WeatherRestrictions extends JavaPlugin implements Runnable
 	{
 		// Check to see if there is a configuration file.
 		// Credits to <Sleaker>
-		File yml = new File( getDataFolder() + "/config.yml" );
+		yml = new File( getDataFolder() + "/config.yml" );
 		
 		if( !yml.exists() )
 		{
-			new File( getDataFolder().toString() ).mkdir();
+			getDataFolder().mkdir();
 			
 			try
 			{
@@ -59,7 +56,7 @@ public class WeatherRestrictions extends JavaPlugin implements Runnable
 		}
 		setupPermissions();
 		setupThunderTower();
-		config = getConfiguration();
+		config = getConfig();
 
 		dispatchThread = new Thread(this);
         dispatchThread.start();
@@ -151,12 +148,12 @@ public class WeatherRestrictions extends JavaPlugin implements Runnable
 	
 	public void setConfigNode( String name, String worldName, Boolean value )
 	{
-		config.setProperty( worldName + "." + name, value );
+		config.set( worldName + "." + name, value );
 	}
 	
 	public void setConfigNode( String name, String worldName, int value )
 	{
-		config.setProperty( worldName + "." + name, value );
+		config.set( worldName + "." + name, value );
 	}
 	
 	private void setupPermissions() {
@@ -195,7 +192,7 @@ public class WeatherRestrictions extends JavaPlugin implements Runnable
 
 	public void setConfigNode(String name, String worldName,
 			double value) {
-		config.setProperty( worldName + "." + name, value );
+		config.set( worldName + "." + name, value );
 		
 	}
 	

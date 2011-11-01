@@ -1,5 +1,8 @@
 package tux2.weatherrestrictions;
 
+import java.io.IOException;
+import java.util.Random;
+
 import org.bukkit.World;
 import org.bukkit.event.world.WorldListener;
 import org.bukkit.event.world.WorldLoadEvent;
@@ -22,7 +25,7 @@ public class WeatherRestrictionsWorldListener extends WorldListener
 	{
 		String worldName = world.getName();
 		
-		if( !plugin.config.getKeys( null ).contains( worldName ) )
+		if( !plugin.config.contains( worldName ) )
 		{
 			plugin.log.info( "[WeatherRestrictions] " + worldName + " - no configuration, generating defaults." );
 		}
@@ -32,7 +35,7 @@ public class WeatherRestrictionsWorldListener extends WorldListener
 		Boolean disLightning = plugin.isNodeDisabled( "disable-lightning", worldName );
 		Boolean disSnow = plugin.isNodeDisabled( "disable-snow-accumulation", worldName );
 		Boolean disIce = plugin.isNodeDisabled( "disable-ice-accumulation", worldName );
-		Boolean alwaysThunderstorms = plugin.isNodeDisabled( "makeall-thunderstorms", worldName, false );
+		double thunderstormChance = plugin.getDoubleValue( "thunderstorm-chance", worldName, 35 );
 		int minWaitWeather = plugin.getIntValue("minimum-rain-wait", worldName, 600);
 		int maxWaitWeather = plugin.getIntValue( "max-rain-wait", worldName, -1 );
 		int maxWaitRain = plugin.getIntValue( "max-rain-duration", worldName, -1 );
@@ -87,9 +90,13 @@ public class WeatherRestrictionsWorldListener extends WorldListener
 			}
 		}
 		
-		//If they have it so there is only thunderstorms, make sure there is thunder here....
-		if (world.hasStorm() && alwaysThunderstorms) {
-			world.setThundering(true);
+		//set the chance of a thunder storm....
+		if (world.hasStorm() && thunderstormChance > 0) {
+			if(new Random().nextInt(10000) <= (thunderstormChance*100)) {
+				world.setThundering(true);
+			}else {
+				world.setThundering(false);
+			}
 		}
 		
 		if( disThunder && world.isThundering() )
@@ -110,9 +117,13 @@ public class WeatherRestrictionsWorldListener extends WorldListener
 		plugin.setConfigNode( "minimum-rain-wait", worldName, minWaitWeather );
 		plugin.setConfigNode( "max-rain-wait", worldName, maxWaitWeather );
 		plugin.setConfigNode( "max-rain-duration", worldName, maxWaitRain );
-		plugin.setConfigNode("makeall-thunderstorms", worldName, alwaysThunderstorms);
+		plugin.setConfigNode("thunderstorm-chance", worldName, thunderstormChance);
 		plugin.setConfigNode("supercharged-thunder-chance", worldName, superchargedchance);
 		plugin.setConfigNode("supercharged-explosion-radius", worldName, superchargedexplosion);
-		plugin.config.save();
+		try {
+			plugin.config.save(plugin.yml);
+		} catch (IOException e) {
+			//e.printStackTrace();
+		}
 	}
 }
