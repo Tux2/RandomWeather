@@ -84,7 +84,7 @@ public class WeatherRestrictionsCommands implements CommandExecutor {
 				if(args.length != 0) {
 					long lasttime = 0;
 					try {
-						lasttime = (Long) plugin.lastweather.get(args[0]);
+						lasttime = plugin.lastweather.get(args[0]);
 					}catch(Exception e) {
 						
 					}
@@ -100,7 +100,7 @@ public class WeatherRestrictionsCommands implements CommandExecutor {
 					String theworld = player.getWorld().getName();
 					long lasttime = 0;
 					try {
-						lasttime = (Long) plugin.lastweather.get(theworld);
+						lasttime = plugin.lastweather.get(theworld);
 					}catch(Exception e) {
 						
 					}

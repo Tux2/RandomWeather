@@ -1,7 +1,5 @@
 package tux2.weatherrestrictions;
 
-import org.bukkit.World;
-
 public class DoRain implements Runnable {
 
 	WeatherStarts world;

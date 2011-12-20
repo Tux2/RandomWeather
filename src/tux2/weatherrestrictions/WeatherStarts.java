@@ -1,8 +1,6 @@
 package tux2.weatherrestrictions;
 
-import java.io.Serializable;
-
-public class WeatherStarts implements Comparable {
+public class WeatherStarts implements Comparable<WeatherStarts> {
 	
 	private long dueTime;
 	private String world;
@@ -16,7 +14,7 @@ public class WeatherStarts implements Comparable {
 		this.type = type;
 	}
 	
-	public synchronized int compareTo(Object o) {
+	public synchronized int compareTo(WeatherStarts o) {
         if (o instanceof WeatherStarts) {
         	WeatherStarts other = (WeatherStarts) o;
             if (dueTime < other.dueTime) {

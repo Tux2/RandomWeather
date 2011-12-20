@@ -2,10 +2,9 @@ package tux2.weatherrestrictions;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.Collections;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.PriorityBlockingQueue;
 import java.util.logging.Logger;
 
 import org.bukkit.World;
@@ -30,8 +29,8 @@ public class WeatherRestrictions extends JavaPlugin implements Runnable
 	File yml;
 	Thread dispatchThread;
 	public final Logger log = Logger.getLogger( "Minecraft" );
-	ConcurrentHashMap lastweather = new ConcurrentHashMap();
-	LinkedList<WeatherStarts> timeweather = new LinkedList<WeatherStarts>();
+	ConcurrentHashMap<String, Long> lastweather = new ConcurrentHashMap<String, Long>();
+	PriorityBlockingQueue<WeatherStarts> timeweather = new PriorityBlockingQueue<WeatherStarts>();
 	ConcurrentHashMap<String, WeatherStarts> worldsweather = new ConcurrentHashMap<String, WeatherStarts>();
 	
 	public void onEnable( )
@@ -178,7 +177,7 @@ public class WeatherRestrictions extends JavaPlugin implements Runnable
         }
     }
     
-    public static boolean hasPermissions(Player player, String node) {
+    public boolean hasPermissions(Player player, String node) {
         if (Permissions != null) {
             return Permissions.has(player, node);
         } else {
@@ -222,7 +221,7 @@ public class WeatherRestrictions extends JavaPlugin implements Runnable
                 
             }
 
-            WeatherStarts reminder = (WeatherStarts) timeweather.getFirst();
+            WeatherStarts reminder = (WeatherStarts) timeweather.peek();
             long delay = reminder.getDueTime() - System.currentTimeMillis();
             if (delay > 0) {
                 try {
@@ -230,7 +229,7 @@ public class WeatherRestrictions extends JavaPlugin implements Runnable
                 }
                 catch (InterruptedException e) {
                     // A new weather event was added. Sort the list.
-                    Collections.sort(timeweather);
+                    //Collections.sort(timeweather);
                 }
             }
             else {
