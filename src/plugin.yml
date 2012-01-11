@@ -1,8 +1,9 @@
 name: WeatherRestrictions
 main: tux2.weatherrestrictions.WeatherRestrictions
-version: 2.2
+version: 2.3
 description: Configurable semi-random weather
-author: xPaw & Tux2
+author: Tux2
+authors: [xPaw]
 commands:
    rain:
       description: Makes it rain in the current world (if enabled).
