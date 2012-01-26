@@ -2,25 +2,24 @@ package tux2.weatherrestrictions;
 
 import java.util.Random;
 import org.bukkit.Location;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
+import org.bukkit.event.Listener;
 import org.bukkit.event.weather.LightningStrikeEvent;
 import org.bukkit.event.weather.ThunderChangeEvent;
 import org.bukkit.event.weather.WeatherChangeEvent;
-import org.bukkit.event.weather.WeatherListener;
 
-public class WeatherRestrictionsWeatherListener extends WeatherListener
-{
+public class WeatherRestrictionsWeatherListener implements Listener {
 	private WeatherRestrictions plugin;
 	Random rand = new Random();
 	
-	public WeatherRestrictionsWeatherListener( WeatherRestrictions plugin )
-	{
+	public WeatherRestrictionsWeatherListener( WeatherRestrictions plugin ) {
 		this.plugin = plugin;
 	}
 	
-	public synchronized void onWeatherChange( WeatherChangeEvent event )
-	{
-		if( !event.isCancelled() && event.toWeatherState() && plugin.isNodeDisabled( "disable-weather", event.getWorld().getName() ) )
-		{
+	@EventHandler(priority = EventPriority.HIGHEST)
+	public synchronized void onWeatherChange( WeatherChangeEvent event ) {
+		if( !event.isCancelled() && event.toWeatherState() && plugin.isNodeDisabled( "disable-weather", event.getWorld().getName() ) ) {
 			event.setCancelled( true );
 		}else {
 			long lasttime = 0;
@@ -94,40 +93,29 @@ public class WeatherRestrictionsWeatherListener extends WeatherListener
 		}
 	}
 	
-	public synchronized void onThunderChange( ThunderChangeEvent event )
-	{
-		if( !event.isCancelled() && event.toThunderState() && plugin.isNodeDisabled( "disable-thunder", event.getWorld().getName() ) )
-		{
+	@EventHandler(priority = EventPriority.HIGHEST)
+	public synchronized void onThunderChange( ThunderChangeEvent event ) {
+		if( !event.isCancelled() && event.toThunderState() && plugin.isNodeDisabled( "disable-thunder", event.getWorld().getName() ) ) {
 			event.setCancelled( true );
 		}
 	}
 	
-	public synchronized void onLightningStrike( LightningStrikeEvent event )
-	{
-		if( !event.isCancelled() && plugin.isNodeDisabled( "disable-lightning", event.getWorld().getName() ) )
-		{
+	@EventHandler(priority = EventPriority.HIGHEST)
+	public synchronized void onLightningStrike( LightningStrikeEvent event ) {
+		if( !event.isCancelled() && plugin.isNodeDisabled( "disable-lightning", event.getWorld().getName() ) ) {
 			event.setCancelled( true );
 			//Capture that lightning event and add a percent chance that it is supercharged.
 		}else if( !event.isCancelled()) {
 			if (rand.nextInt(10000) >= (10000.0 - (plugin.getDoubleValue("supercharged-thunder-chance", event.getWorld().getName(), 0) * 100.0))) {
-				//boolean towernotfound = true;
 				if(plugin.thunderTower != null) {
 					if(!plugin.thunderTower.isThunderTowerTop(event.getLightning().getLocation())) {
 						Location loc = event.getLightning().getLocation();
-						//System.out.println("Tower not found! Activating super lightning!");
 						event.getWorld().createExplosion(loc, (float)plugin.getIntValue("supercharged-explosion-radius", event.getWorld().getName(), 3), true);
-						//((org.bukkit.craftbukkit.CraftWorld)event.getWorld()).getHandle().createExplosion(null, loc.getX(), loc.getY(), loc.getZ(), (float)plugin.getIntValue("supercharged-explosion-radius", event.getWorld().getName(), 3), true);
-					}else {
-						//System.out.println("Tower found! Not activating super lightning!");
 					}
 				}else {
 					Location loc = event.getLightning().getLocation();
-					//System.out.println("Tower not found! Activating super lightning!");
 					event.getWorld().createExplosion(loc, (float)plugin.getIntValue("supercharged-explosion-radius", event.getWorld().getName(), 3), true);
-					//((org.bukkit.craftbukkit.CraftWorld)event.getWorld()).getHandle().createExplosion(null, loc.getX(), loc.getY(), loc.getZ(), (float)plugin.getIntValue("supercharged-explosion-radius", event.getWorld().getName(), 3), true);
 				}
-
-				//System.out.println("Lightning hit: " + event.getLightning().getLocation().getBlockX() + ", " + event.getLightning().getLocation().getBlockY() + ", " + event.getLightning().getLocation().getBlockZ());
 
 			}
 		}

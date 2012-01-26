@@ -4,11 +4,11 @@ import java.io.IOException;
 import java.util.Random;
 
 import org.bukkit.World;
-import org.bukkit.event.world.WorldListener;
-import org.bukkit.event.world.WorldLoadEvent;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
+import org.bukkit.event.Listener;
 
-public class WeatherRestrictionsWorldListener extends WorldListener
-{
+public class WeatherRestrictionsWorldListener implements Listener {
 	private WeatherRestrictions plugin;
 	
 	public WeatherRestrictionsWorldListener( WeatherRestrictions plugin )
@@ -16,17 +16,11 @@ public class WeatherRestrictionsWorldListener extends WorldListener
 		this.plugin = plugin;
 	}
 	
-	public void onWorldLoad( WorldLoadEvent event )
-	{
-		WorldLoaded( event.getWorld() );
-	}
-	
-	public synchronized void WorldLoaded( World world )
-	{
+	@EventHandler(priority = EventPriority.MONITOR)
+	public synchronized void WorldLoaded( World world ) {
 		String worldName = world.getName();
 		
-		if( !plugin.config.contains( worldName ) )
-		{
+		if( !plugin.config.contains( worldName ) ) {
 			plugin.log.info( "[WeatherRestrictions] " + worldName + " - no configuration, generating defaults." );
 		}
 		
@@ -42,8 +36,7 @@ public class WeatherRestrictionsWorldListener extends WorldListener
 		double superchargedchance = plugin.getDoubleValue( "supercharged-thunder-chance", worldName, 0 );
 		double superchargedexplosion = plugin.getDoubleValue( "supercharged-explosion-radius", worldName, 3 );
 		
-		if( disWeather && world.hasStorm() )
-		{
+		if( disWeather && world.hasStorm() ) {
 			world.setStorm( false );
 			plugin.log.info( "[WeatherRestrictions] Stopped storm in " + worldName );
 		}else if (world.hasStorm()) {

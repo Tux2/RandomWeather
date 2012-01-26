@@ -1,6 +1,6 @@
 name: WeatherRestrictions
 main: tux2.weatherrestrictions.WeatherRestrictions
-version: 2.3
+version: 2.5
 description: Configurable semi-random weather
 author: Tux2
 authors: [xPaw]

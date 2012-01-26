@@ -1,11 +1,13 @@
 package tux2.weatherrestrictions;
 
 import org.bukkit.Material;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
+import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockFormEvent;
-import org.bukkit.event.block.BlockListener;
 
 
-public class WeatherRestrictionsBlockListener extends BlockListener {
+public class WeatherRestrictionsBlockListener implements Listener {
 	
 	WeatherRestrictions plugin;
 
@@ -13,13 +15,7 @@ public class WeatherRestrictionsBlockListener extends BlockListener {
 		this.plugin = plugin;
 	}
 	
-	/*
-	public void onSnowForm(SnowFormEvent event) {
-		if(!event.isCancelled() && plugin.isNodeDisabled("disable-snow-accumulation", event.getBlock().getWorld().getName())) {
-			event.setCancelled(true);
-		}
-	}*/
-	
+	@EventHandler(priority = EventPriority.HIGHEST)
 	public void onBlockForm(BlockFormEvent event) {
 		if(!event.isCancelled() && event.getNewState().getType() == Material.ICE) {
 			if(plugin.isNodeDisabled("disable-ice-accumulation", event.getBlock().getWorld().getName())) {

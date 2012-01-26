@@ -11,7 +11,6 @@ import org.bukkit.World;
 import org.bukkit.command.PluginCommand;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
-import org.bukkit.event.Event;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.PluginManager;
@@ -27,6 +26,7 @@ public class WeatherRestrictions extends JavaPlugin implements Runnable
 	ThunderTower thunderTower;
 	public FileConfiguration config;
 	File yml;
+	ConcurrentHashMap<String, Object> properties = new ConcurrentHashMap<String, Object>();
 	Thread dispatchThread;
 	public final Logger log = Logger.getLogger( "Minecraft" );
 	ConcurrentHashMap<String, Long> lastweather = new ConcurrentHashMap<String, Long>();
@@ -76,12 +76,9 @@ public class WeatherRestrictions extends JavaPlugin implements Runnable
 			worldL.WorldLoaded( world );
 		}
 		
-		pm.registerEvent( Event.Type.WORLD_LOAD, worldL, Event.Priority.Monitor, this );
-		pm.registerEvent( Event.Type.WEATHER_CHANGE, wL, Event.Priority.Highest, this );
-		pm.registerEvent( Event.Type.THUNDER_CHANGE, wL, Event.Priority.Highest, this );
-		pm.registerEvent( Event.Type.LIGHTNING_STRIKE, wL, Event.Priority.Highest, this );
-		//pm.registerEvent(Event.Type.SNOW_FORM, blockL, Event.Priority.Highest, this);
-		pm.registerEvent(Event.Type.BLOCK_FORM, blockL, Event.Priority.Highest, this);
+		pm.registerEvents(worldL, this);
+		pm.registerEvents(wL, this);
+		pm.registerEvents(blockL, this);
 		PluginCommand batchcommand = this.getCommand("wr");
 		batchcommand.setExecutor(commandL);
 		try {
@@ -131,18 +128,34 @@ public class WeatherRestrictions extends JavaPlugin implements Runnable
 	
 	public boolean isNodeDisabled( String name, String worldName, boolean thedefault )
 	{
-		return config.getBoolean( worldName + "." + name, thedefault );
+		Object variable = properties.get(worldName + "." + name);
+		if(variable != null) {
+			return ((Boolean)variable).booleanValue();
+		}else {
+			boolean var = config.getBoolean( worldName + "." + name, thedefault );
+			properties.put(worldName + "." + name, new Boolean(var));
+			return var;
+			
+		}
 	}
 	
 	/**Default is True if not set.**/
 	public boolean isNodeDisabled( String name, String worldName )
 	{
-		return config.getBoolean( worldName + "." + name, true );
+		return isNodeDisabled(name, worldName, true);
 	}
 	
 	public int getIntValue( String name, String worldName, int thedefault )
 	{
-		return config.getInt(worldName + "." + name, thedefault);
+		Object variable = properties.get(worldName + "." + name);
+		if(variable != null) {
+			return ((Integer)variable).intValue();
+		}else {
+			int var = config.getInt(worldName + "." + name, thedefault);
+			properties.put(worldName + "." + name, new Integer(var));
+			return var;
+			
+		}
 	}
 	
 	public void setConfigNode( String name, String worldName, Boolean value )
@@ -186,7 +199,14 @@ public class WeatherRestrictions extends JavaPlugin implements Runnable
     }
 
 	public double getDoubleValue(String name, String worldName, int thedefault) {
-		return config.getDouble(worldName + "." + name, thedefault);
+		Object variable = properties.get(worldName + "." + name);
+		if(variable != null) {
+			return ((Double)variable).doubleValue();
+		}else {
+			double var = config.getDouble(worldName + "." + name, thedefault);
+			properties.put(worldName + "." + name, new Double(var));
+			return var;
+		}
 	}
 
 	public void setConfigNode(String name, String worldName,
