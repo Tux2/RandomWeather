@@ -7,6 +7,7 @@ import org.bukkit.World;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
+import org.bukkit.event.world.WorldLoadEvent;
 
 public class WeatherRestrictionsWorldListener implements Listener {
 	private WeatherRestrictions plugin;
@@ -17,6 +18,10 @@ public class WeatherRestrictionsWorldListener implements Listener {
 	}
 	
 	@EventHandler(priority = EventPriority.MONITOR)
+	public synchronized void worldLoadedEvent(WorldLoadEvent event) {
+		WorldLoaded(event.getWorld());
+	}
+	
 	public synchronized void WorldLoaded( World world ) {
 		String worldName = world.getName();
 		

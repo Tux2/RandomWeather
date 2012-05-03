@@ -110,11 +110,11 @@ public class WeatherRestrictionsWeatherListener implements Listener {
 				if(plugin.thunderTower != null) {
 					if(!plugin.thunderTower.isThunderTowerTop(event.getLightning().getLocation())) {
 						Location loc = event.getLightning().getLocation();
-						event.getWorld().createExplosion(loc, (float)plugin.getIntValue("supercharged-explosion-radius", event.getWorld().getName(), 3), true);
+						event.getWorld().createExplosion(loc, (float)plugin.getDoubleValue("supercharged-explosion-radius", event.getWorld().getName(), 3), true);
 					}
 				}else {
 					Location loc = event.getLightning().getLocation();
-					event.getWorld().createExplosion(loc, (float)plugin.getIntValue("supercharged-explosion-radius", event.getWorld().getName(), 3), true);
+					event.getWorld().createExplosion(loc, (float)plugin.getDoubleValue("supercharged-explosion-radius", event.getWorld().getName(), 3), true);
 				}
 
 			}

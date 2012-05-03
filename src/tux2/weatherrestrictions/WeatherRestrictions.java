@@ -255,7 +255,7 @@ public class WeatherRestrictions extends JavaPlugin implements Runnable
             else {
             	//Remove this before another thread might add it back...
             	timeweather.remove(reminder);
-            	getServer().getScheduler().scheduleSyncDelayedTask(this, new DoRain(this, reminder));
+            	getServer().getScheduler().scheduleSyncDelayedTask(this, new DoRain(this, reminder), 1);
             	/*if(reminder.getType() == WeatherStarts.STARTRAIN) {
             		
             		getServer().getWorld(reminder.getWorld()).setStorm(true);
