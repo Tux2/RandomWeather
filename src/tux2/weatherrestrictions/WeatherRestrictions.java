@@ -145,7 +145,7 @@ public class WeatherRestrictions extends JavaPlugin implements Runnable
 		return isNodeDisabled(name, worldName, true);
 	}
 	
-	public int getIntValue( String name, String worldName, int thedefault )
+	public synchronized int getIntValue( String name, String worldName, int thedefault )
 	{
 		Object variable = properties.get(worldName + "." + name);
 		if(variable != null) {
