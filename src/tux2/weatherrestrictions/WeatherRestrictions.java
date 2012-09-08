@@ -33,7 +33,7 @@ public class WeatherRestrictions extends JavaPlugin implements Runnable
 	PriorityBlockingQueue<WeatherStarts> timeweather = new PriorityBlockingQueue<WeatherStarts>();
 	ConcurrentHashMap<String, WeatherStarts> worldsweather = new ConcurrentHashMap<String, WeatherStarts>();
 	
-	public void onEnable( )
+	public synchronized void onEnable( )
 	{
 		// Check to see if there is a configuration file.
 		// Credits to <Sleaker>
@@ -126,7 +126,7 @@ public class WeatherRestrictions extends JavaPlugin implements Runnable
 		//
 	}
 	
-	public boolean isNodeDisabled( String name, String worldName, boolean thedefault )
+	public synchronized boolean isNodeDisabled( String name, String worldName, boolean thedefault )
 	{
 		Object variable = properties.get(worldName + "." + name);
 		if(variable != null) {
@@ -158,12 +158,12 @@ public class WeatherRestrictions extends JavaPlugin implements Runnable
 		}
 	}
 	
-	public void setConfigNode( String name, String worldName, Boolean value )
+	public synchronized void setConfigNode( String name, String worldName, Boolean value )
 	{
 		config.set( worldName + "." + name, value );
 	}
 	
-	public void setConfigNode( String name, String worldName, int value )
+	public synchronized void setConfigNode( String name, String worldName, int value )
 	{
 		config.set( worldName + "." + name, value );
 	}
@@ -198,7 +198,7 @@ public class WeatherRestrictions extends JavaPlugin implements Runnable
         }
     }
 
-	public double getDoubleValue(String name, String worldName, int thedefault) {
+	public synchronized double getDoubleValue(String name, String worldName, int thedefault) {
 		Object variable = properties.get(worldName + "." + name);
 		if(variable != null) {
 			return ((Double)variable).doubleValue();
@@ -209,7 +209,7 @@ public class WeatherRestrictions extends JavaPlugin implements Runnable
 		}
 	}
 
-	public void setConfigNode(String name, String worldName,
+	public synchronized void setConfigNode(String name, String worldName,
 			double value) {
 		config.set( worldName + "." + name, value );
 		
